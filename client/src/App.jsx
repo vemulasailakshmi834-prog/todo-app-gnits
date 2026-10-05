@@ -37,8 +37,10 @@ function App() {
   const handleUpdate = (id, data) =>
     run(async () => {
       const updated = await updateTodo(id, data);
-      // TODO: Complete this. Update the `todos` state so the edited todo is
-      // replaced with `updated` (keep every other todo as it is).
+
+      setTodos((prev) =>
+        prev.map((todo) => (todo._id === id ? updated : todo))
+      );
     });
 
   const handleDelete = (id) =>
@@ -68,8 +70,10 @@ function App() {
       <main className="panel content">
         <header className="content-header">
           <h2>{FILTERS[filter].label}</h2>
+
           <span className="content-count">
-            {filteredTodos.length} {filteredTodos.length === 1 ? "task" : "tasks"}
+            {filteredTodos.length}{" "}
+            {filteredTodos.length === 1 ? "task" : "tasks"}
           </span>
         </header>
 
@@ -78,6 +82,7 @@ function App() {
         {error && (
           <div className="error" role="alert">
             <span>{error}</span>
+
             <button onClick={() => setError("")} aria-label="Dismiss">
               ×
             </button>
@@ -89,6 +94,7 @@ function App() {
         ) : filteredTodos.length === 0 ? (
           <div className="empty">
             <img src="/logo.png" alt="" />
+
             <p>
               {filter === "done"
                 ? "Nothing completed yet"
